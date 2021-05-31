@@ -73,6 +73,7 @@ namespace BingoUI
             ModHooks.Instance.SetPlayerIntHook += UpdateIntCanvas;
             ModHooks.Instance.SetPlayerBoolHook += UpdateBoolCanvas;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += PatchCornifer;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += ResetGrubsFlag;
             On.UIManager.GoToPauseMenu += OnPause;
             On.UIManager.UIClosePauseMenu += OnUnpause;
@@ -533,6 +534,17 @@ namespace BingoUI
         private void PatchCornifer(Scene arg0, LoadSceneMode arg1)
         {
             _coroutineStarter.StartCoroutine(PatchCorniferDelay());
+        }
+
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            if (!_globalSettings.alwaysDisplay) {
+                // Fade all the canvases out in case any got stuck on from quick pause/unpausing
+                foreach (CanvasGroup canvasGroup in CanvasGroups.Values)
+                {
+                    _coroutineStarter.StartCoroutine(CanvasUtil.FadeOutCanvasGroup(canvasGroup));
+                }
+            }
         }
 
         private void UpdateCornifer(string sceneName)
