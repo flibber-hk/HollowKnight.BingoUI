@@ -21,6 +21,7 @@ namespace BingoUI
     public class BingoUI : Mod, ITogglableMod
     {
         private static Dictionary<KeyEnums, CanvasGroup> CanvasGroups;
+        private static Dictionary<KeyEnums, bool> Disabled;
         private static Dictionary<KeyEnums, Text> TextPanels;
         private static Dictionary<KeyEnums, DateTime> NextCanvasFade;
 
@@ -69,6 +70,7 @@ namespace BingoUI
             CanvasGroups = new Dictionary<KeyEnums, CanvasGroup>();
             TextPanels = new Dictionary<KeyEnums, Text>();
             NextCanvasFade = new Dictionary<KeyEnums, DateTime>();
+            Disabled = new Dictionary<KeyEnums, bool>();
             // Hooks
             ModHooks.Instance.SetPlayerIntHook += UpdateIntCanvas;
             ModHooks.Instance.SetPlayerBoolHook += UpdateBoolCanvas;
@@ -110,7 +112,7 @@ namespace BingoUI
             Dictionary<string, Sprite> sprites = SereCore.ResourceHelper.GetSprites();
             // Define anchor minimum and maximum so we can modify them in a loop and display the images systematically
             Vector2 anchorMin = new Vector2(0f, 0.01f);
-            Vector2 anchorMax = new Vector2(1f/15f, 0.1f);
+            Vector2 vecDiff = new Vector2(1f/15f, 0.1f);
 
             // Create the canvas, make it not disappear on load
             _canvas = CanvasUtil.CreateCanvas(RenderMode.ScreenSpaceCamera, new Vector2(1920, 1080));
@@ -122,12 +124,33 @@ namespace BingoUI
                 string[] a = pair.Key.Split('.');
                 string key = a[a.Length - 1];
 
+                bool invisible = false;
+                Vector2 vecMin = anchorMin;
+                if (_globalSettings.customLayout) {
+                    // Custom layout configuration
+                    var enabledField = _globalSettings.GetType().GetProperty(key + "_enabled");
+                    var xField = _globalSettings.GetType().GetProperty(key + "_x");
+                    var yField = _globalSettings.GetType().GetProperty(key + "_y");
+                    if (enabledField != null && (bool)enabledField.GetValue(_globalSettings, null) && xField != null && yField != null) {
+                        float x = (float) xField.GetValue(_globalSettings, null);
+                        float y = (float) yField.GetValue(_globalSettings, null);
+                        if (x < 0f || y < 0f || x >= 1f || y >= 1f) {
+                            // Check if the icon is in bounds
+                            invisible = true;
+                        } else {
+                            vecMin = new Vector2(x, y);
+                        }
+                    } else {
+                        invisible = true;
+                    }
+                }
+
                 // Create the image
                 GameObject canvasSprite = CanvasUtil.CreateImagePanel
                 (
                     _canvas,
                     pair.Value,
-                    new CanvasUtil.RectData(Vector2.zero, Vector2.zero, anchorMin, anchorMax)
+                    new CanvasUtil.RectData(Vector2.zero, Vector2.zero, vecMin, vecMin + vecDiff)
                 );
 
                 // Add a canvas group so we can fade it in and out
@@ -141,6 +164,8 @@ namespace BingoUI
                 // Add the group to the map to access it easier
                 CanvasGroups.Add((KeyEnums)Enum.Parse(typeof(KeyEnums),key), canvasGroup);
 
+                // Set disabled icons to be disabled, which makes sure they never fade into view
+                Disabled.Add((KeyEnums)Enum.Parse(typeof(KeyEnums),key), invisible);
 
                 // Create text, parented to the image so it gets centered on it
                 GameObject text = CanvasUtil.CreateTextPanel
@@ -153,11 +178,11 @@ namespace BingoUI
                 );
                 text.GetComponent<Text>().color = Color.black;
 
+                // Below is code for placing icons in the default configuration
                 // Increment the anchors so the next image isn't on top. If it's all the way right, start drawing up
                 // This makes no sense with the new way of diving 1/sprites.Count, but it's kept in case that way starts failing due to space constraints
-                Vector2 sum = anchorMax.x >= 0.95f ? new Vector2(0, 0.11f) : new Vector2(1f/15,0);
+                Vector2 sum = anchorMin.x >= 0.88f ? new Vector2(0, 0.11f) : new Vector2(1f/15,0);
                 anchorMin += sum;
-                anchorMax += sum;
 
                 // Easy access to the text panel
                 TextPanels.Add((KeyEnums)Enum.Parse(typeof(KeyEnums), key), text.GetComponent<Text>());
@@ -303,6 +328,9 @@ namespace BingoUI
             
             if (DateTime.Now < NextCanvasFade[KeyEnums.grub])
                 return;
+            if (Disabled[KeyEnums.grub])
+                return;
+
             _coroutineStarter.StartCoroutine(FadeCanvas(CanvasGroups[KeyEnums.grub]));
             NextCanvasFade[KeyEnums.grub] = DateTime.Now.AddSeconds(0.5f);
         }
@@ -364,6 +392,9 @@ namespace BingoUI
             
             if(DateTime.Now < NextCanvasFade[key] || oldText == TextPanels[key].text)
                 return;
+            if (Disabled[key])
+                return;
+
             _coroutineStarter.StartCoroutine(FadeCanvas(CanvasGroups[key]));
             NextCanvasFade[key] = DateTime.Now.AddSeconds(0.5f);
 
@@ -584,7 +615,8 @@ namespace BingoUI
             foreach (KeyValuePair<KeyEnums,CanvasGroup> pair in CanvasGroups)
             {
                 UpdateText(pair.Key);
-                _coroutineStarter.StartCoroutine(CanvasUtil.FadeInCanvasGroup(pair.Value));
+                if (!Disabled[pair.Key])
+                    _coroutineStarter.StartCoroutine(CanvasUtil.FadeInCanvasGroup(pair.Value));
             }
 
         }
