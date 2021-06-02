@@ -4,7 +4,7 @@ A tool that displays progress towards some of the most common counting bingo goa
 
 Requires modding API version -56 or higher and SereCore.
 
-Also has a global setting for always displaying the icons
+Also has global settings for a customizable icon layout, as well as always displaying icons.
 
 Currently supports:
 
