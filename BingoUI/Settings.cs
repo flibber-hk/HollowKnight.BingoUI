@@ -38,6 +38,7 @@ namespace BingoUI
     {
         public bool alwaysDisplay=false;
         public bool customLayout=false;
+        public string board_url="";
 
         public bool grub_enabled {
             get => GetBool(true);

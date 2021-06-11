@@ -24,6 +24,7 @@ namespace BingoUI
         private static Dictionary<KeyEnums, bool> Disabled;
         private static Dictionary<KeyEnums, Text> TextPanels;
         private static Dictionary<KeyEnums, DateTime> NextCanvasFade;
+        private BingoSync bs;
 
         // Excluding the pins we didn't want to count proved to be more of a pain than writing the ones we do want and doing .Contains()
         private static readonly string[] mapPinsStrings =
@@ -120,6 +121,9 @@ namespace BingoUI
 
             foreach (KeyValuePair<string, Sprite> pair in sprites)
             {
+                Log(pair.Key);
+                if (pair.Key == "BingoUI.Images.ButtonBG" || pair.Key.StartsWith("BingoUI.Images.Colors")) continue;
+
                 // Get file name without extension as key
                 string[] a = pair.Key.Split('.');
                 string key = a[a.Length - 1];
@@ -192,6 +196,10 @@ namespace BingoUI
 
                 Log("Canvas with key " + key + " created");
             }
+
+            bs = go.AddComponent<BingoSync>();
+            bs.Initialize(_coroutineStarter, _canvas, _globalSettings.board_url);
+            UnityEngine.Object.DontDestroyOnLoad(bs);
 
             Log("Canvas creation done");
         }
