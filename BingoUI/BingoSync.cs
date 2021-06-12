@@ -32,6 +32,7 @@ namespace BingoUI
         private Dictionary<string, Sprite> sprites;
         private const string SPRITE_PATH = "BingoUI.Images.Colors.";
         private const int GOAL_COLOR_DIVISIONS = 20;
+        private string[] COLOR_ORDER = { "pink", "red", "orange", "brown", "yellow", "green", "teal", "blue", "navy", "purple" };
 
         private NonBouncer _nb;
         private GameObject _canvas;
@@ -138,6 +139,8 @@ namespace BingoUI
                 }
 
                 goalNames[i] = CanvasUtil.CreateTextPanel(goals[i], "Goal", 16, TextAnchor.MiddleCenter, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, Vector2.zero, Vector2.one));
+                goalNames[i].AddComponent<Outline>().effectColor = Color.black;
+                goalNames[i].GetComponent<Text>().color = Color.white;
             }
 
             board.SetActive(false);
@@ -225,8 +228,11 @@ namespace BingoUI
                     string color = substring_between(board[i], "\"colors\": \"", "\"");
 
                     if (color != colors[i]) {
+                        colors[i] = color;
+
+                        string[] c = sortColors(color);
+
                         // Distribute the colors as evenly as possible
-                        string[] c = color.Split(' ');
                         int[] n = new int[c.Length];
                         for (int j = 0; j < GOAL_COLOR_DIVISIONS; j++) n[j % c.Length]++;
 
@@ -237,13 +243,29 @@ namespace BingoUI
                                 goalColors[i,k++].GetComponent<Image>().sprite = sprites[$"{SPRITE_PATH}{c[j]}"];
                             }
                         }
-
-                        colors[i] = color;
                     }
 
                     goalNames[i].GetComponent<Text>().text = GoalShortener.shorten(name);
                 }
             }
+        }
+
+        private string[] sortColors(string color) {
+            string[] c = color.Split(' ');
+
+            string[] sorted = new string[c.Length];
+            int idx = 0;
+
+            for (int i = 0; i < COLOR_ORDER.Length; i++) {
+                for (int j = 0; j < c.Length; j++) {
+                    if (COLOR_ORDER[i] == c[j]) {
+                        sorted[idx++] = COLOR_ORDER[i];
+                        break;
+                    }
+                }
+            }
+
+            return sorted;
         }
 
         private string sanitizeID(string id) {

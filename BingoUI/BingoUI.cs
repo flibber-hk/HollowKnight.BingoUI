@@ -18,7 +18,7 @@ using ModCommon.Util;
 
 namespace BingoUI
 {
-    public class BingoUI : Mod, ITogglableMod
+    public class BingoUI : Mod
     {
         private static Dictionary<KeyEnums, CanvasGroup> CanvasGroups;
         private static Dictionary<KeyEnums, bool> Disabled;
