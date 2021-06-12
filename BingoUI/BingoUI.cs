@@ -121,8 +121,7 @@ namespace BingoUI
 
             foreach (KeyValuePair<string, Sprite> pair in sprites)
             {
-                Log(pair.Key);
-                if (pair.Key == "BingoUI.Images.ButtonBG" || pair.Key.StartsWith("BingoUI.Images.Colors")) continue;
+                if (pair.Key.StartsWith("BingoUI.Images.Colors")) continue;
 
                 // Get file name without extension as key
                 string[] a = pair.Key.Split('.');
@@ -198,7 +197,7 @@ namespace BingoUI
             }
 
             bs = go.AddComponent<BingoSync>();
-            bs.Initialize(_coroutineStarter, _canvas, _globalSettings.board_url);
+            bs.Initialize(_coroutineStarter, _canvas, _globalSettings);
             UnityEngine.Object.DontDestroyOnLoad(bs);
 
             Log("Canvas creation done");
