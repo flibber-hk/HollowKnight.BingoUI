@@ -531,7 +531,7 @@ namespace BingoUI
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             
-            string ver = "1.4";
+            string ver = "1.5b";
 
             using SHA1 sha1 = SHA1.Create();
             using FileStream stream = File.OpenRead(asm.Location);
