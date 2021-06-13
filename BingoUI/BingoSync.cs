@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using Modding;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +17,7 @@ namespace BingoUI
         private string _roomID;
 
         private GameObject toggleKeyButton;
-        private bool setToggle = false;
+        private bool setToggle;
         private KeyCode toggle;
 
         private GameObject board;
@@ -32,7 +29,7 @@ namespace BingoUI
         private Dictionary<string, Sprite> sprites;
         private const string SPRITE_PATH = "BingoUI.Images.Colors.";
         private const int GOAL_COLOR_DIVISIONS = 20;
-        private string[] COLOR_ORDER = { "pink", "red", "orange", "brown", "yellow", "green", "teal", "blue", "navy", "purple" };
+        private readonly string[] COLOR_ORDER = { "pink", "red", "orange", "brown", "yellow", "green", "teal", "blue", "navy", "purple" };
 
         private NonBouncer _nb;
         private GameObject _canvas;
@@ -46,7 +43,7 @@ namespace BingoUI
             _settings = settings;
 
             try {
-                toggle = (KeyCode) System.Enum.Parse(typeof(KeyCode), _settings.toggle);
+                toggle = (KeyCode) Enum.Parse(typeof(KeyCode), _settings.toggle);
             } catch {
                 toggle = KeyCode.Tab;
             }
@@ -79,7 +76,7 @@ namespace BingoUI
                 menu,
                 new CanvasUtil.RectData(Vector2.zero, Vector2.zero, new Vector2(0.505f, 0.005f), new Vector2(0.745f, 0.995f))
             );
-            GameObject pasteIDButton = CanvasUtil.CreateButton(
+            CanvasUtil.CreateButton(
                 pasteIDButtonBase,
                 i => ChangeBoard(),
                 0,
@@ -205,7 +202,7 @@ namespace BingoUI
             /*_roomID = sanitizeID(GUIUtility.systemCopyBuffer);
             _settings.room_id = _roomID;
             roomIDText.GetComponent<Text>().text = $"Room ID: {_roomID}";*/
-            RefreshBoard(_roomID);
+            _nb.StartCoroutine(RefreshBoard(_roomID));
         }
 
         private IEnumerator RefreshBoard(string roomID)
@@ -215,51 +212,56 @@ namespace BingoUI
 
                 if (req.isNetworkError || req.isHttpError) yield break;
                 
-                string[] board = req.downloadHandler.text.Split('}');
+                string[] req_board = req.downloadHandler.text.Split('}');
                 for (int i = 0; i < 25; i++) {
-                    string name = substring_between(board[i], "\"name\": \"", "\"");
+                    string goal_name = substring_between(req_board[i], "\"name\": \"", "\"");
 
                     int slot = i;
-                    if (Int32.TryParse(substring_between(board[i], "\"slot\": \"slot", "\""), out int s)) {
+                    if (Int32.TryParse(substring_between(req_board[i], "\"slot\": \"slot", "\""), out int s)) {
                         slot = s-1;
                     }
 
                     // blue brown green navy orange pink purple red teal yellow
-                    string color = substring_between(board[i], "\"colors\": \"", "\"");
+                    string color = substring_between(req_board[i], "\"colors\": \"", "\"");
 
-                    if (color != colors[i]) {
-                        colors[i] = color;
+                    if (color != colors[slot]) {
+                        colors[slot] = color;
+                        if (color == "blank") {
+                            for (int j = 0; j < GOAL_COLOR_DIVISIONS; j++) {
+                                goalColors[slot,j].GetComponent<Image>().sprite = sprites[$"{SPRITE_PATH}blank"];
+                            }
+                        } else {
+                            string[] c = sortColors(color);
 
-                        string[] c = sortColors(color);
+                            // Distribute the colors as evenly as possible
+                            int[] n = new int[c.Length];
+                            for (int j = 0; j < GOAL_COLOR_DIVISIONS; j++) n[j % c.Length]++;
 
-                        // Distribute the colors as evenly as possible
-                        int[] n = new int[c.Length];
-                        for (int j = 0; j < GOAL_COLOR_DIVISIONS; j++) n[j % c.Length]++;
-
-                        // Repaint the cell with the color split
-                        int k = 0;
-                        for (int j = 0; j < c.Length; j++) {
-                            for (int l = 0; l < n[j]; l++) {
-                                goalColors[i,k++].GetComponent<Image>().sprite = sprites[$"{SPRITE_PATH}{c[j]}"];
+                            // Repaint the cell with the color split
+                            int k = 0;
+                            for (int j = 0; j < c.Length; j++) {
+                                for (int l = 0; l < n[j]; l++) {
+                                    goalColors[slot,k++].GetComponent<Image>().sprite = sprites[$"{SPRITE_PATH}{c[j]}"];
+                                }
                             }
                         }
                     }
 
-                    goalNames[i].GetComponent<Text>().text = GoalShortener.shorten(name);
+                    goalNames[slot].GetComponent<Text>().text = GoalShortener.shorten(goal_name);
                 }
             }
         }
 
         private string[] sortColors(string color) {
-            string[] c = color.Split(' ');
+            string[] unsorted = color.Split(' ');
 
-            string[] sorted = new string[c.Length];
+            string[] sorted = new string[unsorted.Length];
             int idx = 0;
 
-            for (int i = 0; i < COLOR_ORDER.Length; i++) {
-                for (int j = 0; j < c.Length; j++) {
-                    if (COLOR_ORDER[i] == c[j]) {
-                        sorted[idx++] = COLOR_ORDER[i];
+            foreach (string ordered_color in COLOR_ORDER) {
+                foreach (string c in unsorted) {
+                    if (ordered_color == c) {
+                        sorted[idx++] = ordered_color;
                         break;
                     }
                 }
