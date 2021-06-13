@@ -58,7 +58,7 @@ namespace BingoUI
 
         public void BuildMenu()
         {
-            menu = CanvasUtil.CreateBasePanel(_canvas, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, new Vector2(0.6f, 0.6f), new Vector2(0.9f, 0.65f)));
+            menu = CanvasUtil.CreateBasePanel(_canvas, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, new Vector2(0.6f, 0.6f), new Vector2(0.95f, 0.65f)));
 
             GameObject roomIDBase = CanvasUtil.CreateBasePanel(menu, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, new Vector2(0.005f, 0.005f), new Vector2(0.495f, 0.995f)));
             roomIDText = CanvasUtil.CreateTextPanel(
@@ -112,7 +112,7 @@ namespace BingoUI
 
         public void BuildBoard()
         {
-            board = CanvasUtil.CreateBasePanel(_canvas, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, new Vector2(0.6f, 0.2f), new Vector2(0.9f, 0.6f)));
+            board = CanvasUtil.CreateBasePanel(_canvas, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, new Vector2(0.6f, 0.2f), new Vector2(0.95f, 0.6f)));
             
             goals = new GameObject[25];
             goalNames = new GameObject[25];
