@@ -26,6 +26,7 @@ namespace BingoUI
             {"Obtain Soul Eater or Soul Catcher", "Soul Eater or Catcher"},
             {"Obtain Thorns of Agony or Stalwart Shell", "Thorns or Stalwart Shell"},
             {"Obtain Shape of Unn or Baldur Shell", "Shape of Unn or Baldur Shell"},
+            {"Obtain Quick Focus or Deep Focus", "Quick or Deep Focus"},
             {"Talk to Lemm in his shop with Defender's Crest equipped", "Talk to Lemm with DCrest"},
             {"Talk to Lemm with Defender's Crest equipped", "Talk to Lemm with DCrest"},
             {"Check the journal below Stone Sanc. and the one above Mantis Village", "Check Stone Sanc. and MV journals"},
@@ -33,6 +34,7 @@ namespace BingoUI
             {"Slash / Check the soul totem above the Pilgrim's Way bridge", "Check the Pilgrim's Way Totem"},
             {"Bow to Moss Prophet, dead or alive", "Bow to Moss Prophet"},
             {"Have 3 different maps not counting Dirtmouth or Hive", "Have 3 different maps"},
+            {"Hit the Oro scarecrow up until the hoppers spawn", "Spawn the Oro scarecrow hoppers"},
 
             {"Check / Free all grubs", "Grubs"},
             {"Check/Free all grubs", "Grubs"},
@@ -56,6 +58,7 @@ namespace BingoUI
             {"Crystal Peak", "Peak"},
             {"Distant Village", "DV"},
             {"Fungal Wastes", "Fungal"},
+            {"Howling Cliffs", "Cliffs"},
             {"Kingdom's Edge", "KE"},
             {"Queen's Gardens", "QG"},
             {"Soul Sanctum", "Sanctum"},
