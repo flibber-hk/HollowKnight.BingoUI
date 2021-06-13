@@ -5,7 +5,7 @@ using Modding;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-//using UnityEngine.IMGUIModule;
+/*using UnityEngine.IMGUIModule;*/
 using Logger = Modding.Logger;
 
 namespace BingoUI
@@ -199,9 +199,9 @@ namespace BingoUI
 
         private void ChangeBoard()
         {
-            /*_roomID = sanitizeID(GUIUtility.systemCopyBuffer);
+            _roomID = sanitizeID(GUIUtility.systemCopyBuffer);
             _settings.room_id = _roomID;
-            roomIDText.GetComponent<Text>().text = $"Room ID: {_roomID}";*/
+            roomIDText.GetComponent<Text>().text = $"Room ID: {_roomID}";
             _nb.StartCoroutine(RefreshBoard(_roomID));
         }
 
