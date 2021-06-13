@@ -26,14 +26,18 @@ namespace BingoUI
         private GameObject[] goalNames;
         private GameObject[,] goalColors;
         private string[] colors;
-        private Dictionary<string, Sprite> sprites;
-        private const string SPRITE_PATH = "BingoUI.Images.Colors.";
-        private const int GOAL_COLOR_DIVISIONS = 20;
-        private readonly string[] COLOR_ORDER = { "pink", "red", "orange", "brown", "yellow", "green", "teal", "blue", "navy", "purple" };
+        private GameObject[] star;
 
+        private Dictionary<string, Sprite> sprites;
         private NonBouncer _nb;
         private GameObject _canvas;
         private GlobalSettings _settings;
+
+        private const string SPRITE_PATH = "BingoUI.Images.Colors.";
+        private const int GOAL_COLOR_DIVISIONS = 20;
+        private readonly string[] COLOR_ORDER = { "pink", "red", "orange", "brown", "yellow", "green", "teal", "blue", "navy", "purple" };
+        private readonly Color[] HIGHLIGHT_CYCLE = { Color.white, Color.red, Color.green, Color.blue };
+
         //private string csrf = "";
 
         public void Initialize(NonBouncer nb, GameObject canvas, GlobalSettings settings)
@@ -118,6 +122,7 @@ namespace BingoUI
             goalNames = new GameObject[25];
             goalColors = new GameObject[25,GOAL_COLOR_DIVISIONS];
             colors = new string[25];
+            star = new GameObject[25];
             for (int i = 0; i < 25; i++) {
                 int r = 4 - (i / 5);
                 int c = i % 5;
@@ -138,10 +143,14 @@ namespace BingoUI
                 goalNames[i] = CanvasUtil.CreateTextPanel(goals[i], "Goal", 16, TextAnchor.MiddleCenter, new CanvasUtil.RectData(Vector2.zero, Vector2.zero, Vector2.zero, Vector2.one));
                 goalNames[i].AddComponent<Outline>().effectColor = Color.black;
                 goalNames[i].GetComponent<Text>().color = Color.white;
+
+                Button highlightButton = goals[i].AddComponent<Button>();
+                int temp = i;
+                highlightButton.onClick.AddListener(() => CycleTextHighlight(temp));
             }
 
             board.SetActive(false);
-            Logger.Log("Bingo board creation done");
+            Logger.Log("[BingoUI] - Bingo board creation done");
 
             _nb.StartCoroutine(ConstantRefresh(5f));
         }
@@ -181,12 +190,6 @@ namespace BingoUI
         {
             setToggle = true;
             toggleKeyButton.GetComponent<Text>().text = "Toggle: PRESS A KEY";
-        }
-
-        private string substring_between(string a, string b, string c)
-        {
-            string t = a.Substring(a.IndexOf(b) + b.Length);
-            return t.Substring(0, t.IndexOf(c));
         }
 
         private IEnumerator ConstantRefresh(float delay)
@@ -252,7 +255,26 @@ namespace BingoUI
             }
         }
 
-        private string[] sortColors(string color) {
+        private void CycleTextHighlight(int i)
+        {
+            Text t = goalNames[i].GetComponent<Text>();
+            for (int c = 0; c < HIGHLIGHT_CYCLE.Length; c++) {
+                if (HIGHLIGHT_CYCLE[c] == t.color) {
+                    t.color = HIGHLIGHT_CYCLE[(c + 1) % HIGHLIGHT_CYCLE.Length];
+                    return;
+                }
+            }
+            t.color = Color.white;
+        }
+
+        private string substring_between(string a, string b, string c)
+        {
+            string t = a.Substring(a.IndexOf(b) + b.Length);
+            return t.Substring(0, t.IndexOf(c));
+        }
+
+        private string[] sortColors(string color)
+        {
             string[] unsorted = color.Split(' ');
 
             string[] sorted = new string[unsorted.Length];
@@ -270,7 +292,8 @@ namespace BingoUI
             return sorted;
         }
 
-        private string sanitizeID(string id) {
+        private string sanitizeID(string id)
+        {
             if (id.IndexOf("/room/") != -1) {
                 id = id.Substring(id.IndexOf("/room/")+6);
             }
