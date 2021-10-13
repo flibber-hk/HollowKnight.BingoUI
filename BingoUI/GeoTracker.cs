@@ -10,18 +10,18 @@ namespace BingoUI
         {
             orig(self, geo);
 
-            if (GameManager.instance.GetSceneNameString() == "Fungus3_35" && PlayerData.instance.bankerAccountPurchased)
+            if (GameManager.instance.GetSceneNameString() == "Fungus3_35" && PlayerData.instance.GetBool(nameof(PlayerData.bankerAccountPurchased)))
             {
                 return;
             }
 
-            BingoUI._settings.spentGeo += geo;
+            BingoUI.localSettings.spentGeo += geo;
         }
 
         public static void UpdateGeoText(On.GeoCounter.orig_Update orig, GeoCounter self)
         {
             orig(self);
-            self.geoTextMesh.text = $"{geoCounterCurrent.GetValue(self)} ({BingoUI._settings.spentGeo} spent)";
+            self.geoTextMesh.text = $"{geoCounterCurrent.GetValue(self)} ({BingoUI.localSettings.spentGeo} spent)";
         }
     }
 }

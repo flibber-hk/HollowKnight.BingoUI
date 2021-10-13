@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BingoUI</RootNamespace>
     <AssemblyName>BingoUI</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,14 +33,30 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ModdingAPI>Assembly References</ModdingAPI>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BingoUI.cs" />
-    <Compile Include="Enums.cs" />
+    <Compile Include="Counters\AbstractCounter.Creator.cs" />
+    <Compile Include="Counters\AbstractCounter.cs" />
+    <Compile Include="BingoUI.Menu.cs" />
+    <Compile Include="Counters\CorniferCounter.cs" />
+    <Compile Include="Counters\DreamTreeCounter.cs" />
+    <Compile Include="Counters\EnemyCounter.cs" />
+    <Compile Include="Counters\GotSoldCounter.cs" />
+    <Compile Include="Counters\GrubCounter.cs" />
+    <Compile Include="Counters\IntCounter.cs" />
+    <Compile Include="Counters\LifebloodCounter.cs" />
+    <Compile Include="Counters\MultiBoolCounter.cs" />
+    <Compile Include="Counters\PaleOreCounter.cs" />
     <Compile Include="GeoTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandoPlandoCompatibility.cs" />
+    <Compile Include="ItemChangerCompatibility.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="SpriteLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(ProjectDir)Images/grub.png" />
@@ -50,58 +68,73 @@
     <EmbeddedResource Include="$(ProjectDir)Images/ore.png" />
     <EmbeddedResource Include="$(ProjectDir)Images/maps.png" />
     <EmbeddedResource Include="$(ProjectDir)Images/cornifer.png" />
-    <EmbeddedResource Include="$(ProjectDir)Images/regg.png" />
-    <EmbeddedResource Include="$(ProjectDir)Images/DreamPlant.png" />
+    <EmbeddedResource Include="$(ProjectDir)Images/rancidegg.png" />
+    <EmbeddedResource Include="$(ProjectDir)Images/dreamplant.png" />
     <EmbeddedResource Include="$(ProjectDir)Images/lifeblood.png" />
     <EmbeddedResource Include="$(ProjectDir)Images/charms.png" />
     <EmbeddedResource Include="$(ProjectDir)Images/pins.png" />
     <EmbeddedResource Include="$(ProjectDir)Images/notches.png" />
-    <EmbeddedResource Include="$(ProjectDir)Images/ghs.png" />
+    <EmbeddedResource Include="$(ProjectDir)Images/greathusksentry.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(ModdingAPI)\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="ItemChanger, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\ItemChanger.dll</HintPath>
+    <Reference Include="ItemChanger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ModdingAPI)\Mods\ItemChanger\ItemChanger.dll</HintPath>
     </Reference>
-    <Reference Include="ModCommon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\ModCommon.dll</HintPath>
+    <Reference Include="MMHOOK_Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ModdingAPI)\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_PlayMaker, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ModdingAPI)\MMHOOK_PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\PlayMaker.dll</HintPath>
+      <HintPath>$(ModdingAPI)\PlayMaker.dll</HintPath>
     </Reference>
-    <Reference Include="RandomizerMod3.0, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\RandomizerMod3.0.dll</HintPath>
-    </Reference>
-    <Reference Include="SereCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\SereCore.dll</HintPath>
-    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\UnityEngine.dll</HintPath>
+      <HintPath>$(ModdingAPI)\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(ModdingAPI)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ModdingAPI)\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>$(ModdingAPI)\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(ModdingAPI)\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(ModdingAPI)\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Assembly References\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(ModdingAPI)\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Vasi">
+      <HintPath>$(ModdingAPI)\Mods\Vasi\Vasi.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <!--
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetDir)BingoUI.dll" DestinationFiles="$(ProjectDir)Compiled Binaries/BingoUI.dll" />
     <Exec Command="@echo on" />
     <Exec Command="echo Copying mod" />
     <Exec Command="copy &quot;$(TargetPath)&quot; &quot;C:\Program Files (x86)\GOG Galaxy\Games\Hollow Knight\hollow_knight_Data\Managed\Mods&quot;" />
   </Target>
+  -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
