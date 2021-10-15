@@ -1,10 +1,17 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using Vasi;
 
 namespace BingoUI
 {
     public static class GeoTracker
     {
-        private static readonly FieldInfo geoCounterCurrent = typeof(GeoCounter).GetField("counterCurrent", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly Func<GeoCounter, int> GetGeoCounterCurrent;
+        static GeoTracker()
+        {
+            FieldInfo fi = Mirror.GetFieldInfo(typeof(GeoCounter), "counterCurrent", true);
+            GetGeoCounterCurrent = (Func<GeoCounter, int>)Mirror.GetGetter<GeoCounter, int>(fi);
+        }
         
         internal static void CheckGeoSpent(On.GeoCounter.orig_TakeGeo orig, GeoCounter self, int geo)
         {
@@ -21,7 +28,10 @@ namespace BingoUI
         public static void UpdateGeoText(On.GeoCounter.orig_Update orig, GeoCounter self)
         {
             orig(self);
-            self.geoTextMesh.text = $"{geoCounterCurrent.GetValue(self)} ({BingoUI.localSettings.spentGeo} spent)";
+            if (BingoUI.globalSettings.showSpentGeo)
+            {
+                self.geoTextMesh.text = $"{GetGeoCounterCurrent(self)} ({BingoUI.localSettings.spentGeo} spent)";
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Modding;
-using BingoUI.Counters;
 
 namespace BingoUI
 {
@@ -21,6 +20,15 @@ namespace BingoUI
                 Saver = SetDisplayState,
                 Loader = GetDisplayState
             });
+            entries.Add(new IMenuMod.MenuEntry
+            {
+                Name = "Show Geo Tracker:",
+                Description = string.Empty,
+                Values = new string[] { "True", "False" },
+                Saver = (i) => globalSettings.showSpentGeo = i == 0,
+                Loader = () => globalSettings.showSpentGeo ? 0 : 1
+            });
+
 
             // Button for each counter?
 

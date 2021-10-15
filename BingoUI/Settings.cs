@@ -35,6 +35,8 @@ namespace BingoUI
     {
         public bool alwaysDisplay = false;
         public bool neverDisplay = false;
+
+        public bool showSpentGeo = true;
         public Dictionary<string, Layout> CounterPositions { get; set; } = new Dictionary<string, Layout>();
     }
 
