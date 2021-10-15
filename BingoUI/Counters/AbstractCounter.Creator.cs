@@ -5,12 +5,13 @@ namespace BingoUI.Counters
 {
     public abstract partial class AbstractCounter
     {
+        public static List<AbstractCounter> Counters;
 
-
-        public static List<AbstractCounter> CreateCounters()
+        public static void InitializeCounters()
         {
-            return new List<AbstractCounter>()
+            Counters = new List<AbstractCounter>()
             {
+                // new CounterType(default x position, default y position, sprite name, any other parameters)
                 new GrubCounter(0f, 0.01f, "grub"),
                 new EnemyCounter(1f / 15f, 0.01f, "devout", "Slash Spider"),
                 new GotSoldCounter(2f / 15f, 0.01f, "trinket1", nameof(PlayerData.trinket1), nameof(PlayerData.soldTrinket1)),
@@ -20,7 +21,7 @@ namespace BingoUI.Counters
                 new PaleOreCounter(6f / 15f, 0.01f, "ore"),
                 new MultiBoolCounter(7f / 15f, 0.01f, "maps", MapNames),
                 new CorniferCounter(8f/15f, 0.01f, "cornifer"),
-                new GotSoldCounter(9f / 15f, 0.01f, "rancidegg", nameof(PlayerData.rancidEggs), nameof(PlayerData.jinnEggsSold)),
+                new TrackedGotSoldCounter(9f / 15f, 0.01f, "rancidegg", nameof(PlayerData.rancidEggs)),
                 new DreamTreeCounter(10f / 15f, 0.01f, "dreamplant"),
                 new LifebloodCounter(11f / 15f, 0.01f, "lifeblood"),
                 new MultiBoolCounter(12f / 15f, 0.01f, "charms", CharmBools),
@@ -28,6 +29,13 @@ namespace BingoUI.Counters
                 new IntCounter(14f / 15f, 0.01f, "notches", nameof(PlayerData.charmSlots)),
                 new EnemyCounter(14f / 15f, 0.12f, "greathusksentry", "Great Shield Zombie")
             };
+
+            foreach (AbstractCounter counter in Counters)
+            {
+                counter.Hook();
+                counter.SetupCanvasIcon();
+                counter.UpdateText(null, canShow: false);
+            }
         }
 
 

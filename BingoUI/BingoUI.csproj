@@ -52,6 +52,7 @@
     <Compile Include="Counters\LifebloodCounter.cs" />
     <Compile Include="Counters\MultiBoolCounter.cs" />
     <Compile Include="Counters\PaleOreCounter.cs" />
+    <Compile Include="Counters\TrackedGotSoldCounter.cs" />
     <Compile Include="GeoTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ItemChangerCompatibility.cs" />

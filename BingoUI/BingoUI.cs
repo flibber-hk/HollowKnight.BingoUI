@@ -14,8 +14,6 @@ namespace BingoUI
     {
         internal static BingoUI Instance;
 
-        internal List<AbstractCounter> counters = new List<AbstractCounter>();
-
         #region Settings
         public static SaveSettings localSettings { get; set; } = new SaveSettings();
         public void OnLoadLocal(SaveSettings s) => localSettings = s;
@@ -39,13 +37,7 @@ namespace BingoUI
                 ItemChangerCompatibility.Initialize();
             }
 
-            foreach (AbstractCounter counter in AbstractCounter.CreateCounters())
-            {
-                counter.Hook();
-                counter.SetupCanvasIcon();
-                counter.UpdateText(null, canShow: false);
-                counters.Add(counter);
-            }
+            AbstractCounter.InitializeCounters();
 
             // Pause Hooks
             On.UIManager.GoToPauseMenu += OnPause;
@@ -68,7 +60,7 @@ namespace BingoUI
                 yield break;
 
             // Update and display every image
-            foreach (AbstractCounter counter in counters)
+            foreach (AbstractCounter counter in AbstractCounter.Counters)
             {
                 counter.UpdateText();
                 counter.FadeIn();
@@ -82,7 +74,7 @@ namespace BingoUI
                 return;
 
             // Fade all the canvases, which we were displaying due to pause, out
-            foreach (AbstractCounter counter in counters)
+            foreach (AbstractCounter counter in AbstractCounter.Counters)
             {
                 counter.FadeOut();
             }
@@ -95,7 +87,7 @@ namespace BingoUI
                 yield break;
 
             // Same thing as above, except apparently quitting to menu doesn't count as unpausing
-            foreach (AbstractCounter counter in counters)
+            foreach (AbstractCounter counter in AbstractCounter.Counters)
             {
                 counter.FadeOut();
             }
@@ -106,7 +98,7 @@ namespace BingoUI
             if (!globalSettings.alwaysDisplay)
             {
                 // Fade all the canvases out in case any got stuck on from quick pause/unpausing
-                foreach (AbstractCounter counter in counters)
+                foreach (AbstractCounter counter in AbstractCounter.Counters)
                 {
                     counter.FadeOut();
                 }
