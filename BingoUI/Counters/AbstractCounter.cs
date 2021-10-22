@@ -33,6 +33,10 @@ namespace BingoUI.Counters
             }
         }
 
+        public void DebugLog(string s)
+        {
+            Debug.Log($"[BingoUI]:[{spriteName}] - {s}");
+        }
         public void Log(string s)
         {
             Modding.Logger.Log($"[BingoUI]:[{spriteName}] - {s}");
@@ -48,7 +52,7 @@ namespace BingoUI.Counters
         {
             if (newText == null) newText = GetText();
             if (textPanel.text == newText && !forceShow) return;
-            if (textPanel.text != newText) Log($"Updating: {textPanel.text} => {newText}");
+            if (textPanel.text != newText) DebugLog($"Updating: {textPanel.text} => {newText}");
             textPanel.text = newText;
             if (!canShow) return;
             
