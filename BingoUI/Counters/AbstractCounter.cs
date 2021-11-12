@@ -43,7 +43,8 @@ namespace BingoUI.Counters
         }
 
         /// <summary>
-        /// Set the text displayed by the counter
+        /// Set the text displayed by the counter. By default, show the counter either if it's already on screen or
+        /// the text changed.
         /// </summary>
         /// <param name="newText">The new text</param>
         /// <param name="canShow">If this is false, don't show the counter unless it's already active</param>

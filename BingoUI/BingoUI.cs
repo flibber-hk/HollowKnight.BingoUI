@@ -105,22 +105,6 @@ namespace BingoUI
         }
         #endregion
 
-
-
-        public override string GetVersion()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            
-            string ver = "1.5";
-
-            using SHA1 sha1 = SHA1.Create();
-            using FileStream stream = File.OpenRead(asm.Location);
-
-            byte[] hashBytes = sha1.ComputeHash(stream);
-            
-            string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-
-            return $"{ver}-{hash.Substring(0, 6)}";
-        }
+        public override string GetVersion() => Vasi.VersionUtil.GetVersion<BingoUI>();
     }
 }
