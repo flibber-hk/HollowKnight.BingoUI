@@ -10,7 +10,8 @@ namespace BingoUI.Counters
         {
             this.intName = intName;
         }
-        public override string GetText() => $"{PlayerData.instance.GetInt(intName)}";
+        public override string GetText() => GetText(PlayerData.instance.GetInt(intName));
+        public string GetText(int amt) => $"{amt}";
         public override void Hook()
         {
             ModHooks.SetPlayerIntHook += OnSetInt;
@@ -20,7 +21,7 @@ namespace BingoUI.Counters
         {
             if (name == intName)
             {
-                UpdateText($"{orig}");
+                UpdateText(GetText(orig));
             }
             return orig;
         }

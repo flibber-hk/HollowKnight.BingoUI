@@ -13,11 +13,17 @@ namespace BingoUI
             GetGeoCounterCurrent = (Func<GeoCounter, int>)Mirror.GetGetter<GeoCounter, int>(fi);
         }
         
-        internal static void CheckGeoSpent(On.GeoCounter.orig_TakeGeo orig, GeoCounter self, int geo)
+        internal static void Hook()
+        {
+            On.GeoCounter.Update += GeoTracker.UpdateGeoText;
+            On.GeoCounter.TakeGeo += GeoTracker.CheckGeoSpent;
+        }
+
+        private static void CheckGeoSpent(On.GeoCounter.orig_TakeGeo orig, GeoCounter self, int geo)
         {
             orig(self, geo);
 
-            if (GameManager.instance.GetSceneNameString() == "Fungus3_35" && PlayerData.instance.GetBool(nameof(PlayerData.bankerAccountPurchased)))
+            if (GameManager.instance.GetSceneNameString() == ItemChanger.SceneNames.Fungus3_35 && PlayerData.instance.GetBool(nameof(PlayerData.bankerAccountPurchased)))
             {
                 return;
             }
@@ -25,7 +31,7 @@ namespace BingoUI
             BingoUI.localSettings.spentGeo += geo;
         }
 
-        public static void UpdateGeoText(On.GeoCounter.orig_Update orig, GeoCounter self)
+        private static void UpdateGeoText(On.GeoCounter.orig_Update orig, GeoCounter self)
         {
             orig(self);
             if (BingoUI.globalSettings.showSpentGeo)

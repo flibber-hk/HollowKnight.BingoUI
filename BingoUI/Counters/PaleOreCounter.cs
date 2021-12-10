@@ -10,10 +10,9 @@ namespace BingoUI.Counters
         {
             ModHooks.SetPlayerIntHook += OnSetInt;
         }
-        public override string GetText()
+        public override string GetText() => GetText(PlayerData.instance.GetInt(nameof(PlayerData.ore)), PlayerData.instance.GetInt(nameof(PlayerData.nailSmithUpgrades)));
+        public string GetText(int ore, int upgrades)
         {
-            int ore = PlayerData.instance.GetInt(nameof(PlayerData.ore));
-            int upgrades = PlayerData.instance.GetInt(nameof(PlayerData.nailSmithUpgrades));
             int oreFromUpgrades = upgrades * (upgrades - 1) / 2; // This equation is stolen from Yusuf
             return $"{ore}({ore + oreFromUpgrades})";
         }
@@ -21,14 +20,9 @@ namespace BingoUI.Counters
         {
             if (name == nameof(PlayerData.ore) || name == nameof(PlayerData.nailSmithUpgrades))
             {
-                int ore;
-                if (name == nameof(PlayerData.ore)) ore = orig;
-                else ore = PlayerData.instance.GetInt(nameof(PlayerData.ore));
-                int upgrades;
-                if (name == nameof(PlayerData.nailSmithUpgrades)) upgrades = orig;
-                else upgrades = PlayerData.instance.GetInt(nameof(PlayerData.nailSmithUpgrades));
-                int oreFromUpgrades = upgrades * (upgrades - 1) / 2; // This equation is stolen from Yusuf
-                UpdateText($"{ore}({ore + oreFromUpgrades})");
+                int ore = name == nameof(PlayerData.ore) ? orig : PlayerData.instance.GetInt(nameof(PlayerData.ore));
+                int upgrades = name == nameof(PlayerData.nailSmithUpgrades) ? orig : PlayerData.instance.GetInt(nameof(PlayerData.nailSmithUpgrades));
+                UpdateText(GetText(ore, upgrades));
             }
 
             return orig;

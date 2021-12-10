@@ -16,8 +16,7 @@ namespace BingoUI.Counters
         private void UpdateDreamTrees(On.GameManager.orig_AddToDreamPlantCList orig, GameManager self)
         {
             orig(self);
-
-            UpdateText($"{PlayerData.instance.GetVariable<List<string>>(nameof(PlayerData.scenesEncounteredDreamPlantC)).Count()}");
+            UpdateText();
         }
     }
 }

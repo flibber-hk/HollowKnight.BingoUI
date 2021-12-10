@@ -12,10 +12,9 @@ namespace BingoUI.Counters
             this.obtainString = obtainString;
             this.sellString = sellString;
         }
-        public override string GetText() 
+        public override string GetText() => GetText(PlayerData.instance.GetInt(obtainString), PlayerData.instance.GetInt(sellString));
+        public string GetText(int got, int sold) 
         {
-            int got = PlayerData.instance.GetInt(obtainString);
-            int sold = PlayerData.instance.GetInt(sellString);
             return $"{got}({got + sold})";
         }
         public override void Hook()
@@ -27,14 +26,10 @@ namespace BingoUI.Counters
         {
             if (name == obtainString || name == sellString)
             {
-                int got;
-                if (name == obtainString) got = orig;
-                else got = PlayerData.instance.GetInt(obtainString);
-                int sold;
-                if (name == sellString) sold = orig;
-                else sold = PlayerData.instance.GetInt(sellString);
+                int got = name == obtainString ? orig : PlayerData.instance.GetInt(obtainString);
+                int sold = name == obtainString ? orig : PlayerData.instance.GetInt(sellString);
 
-                UpdateText($"{got}({got + sold})");
+                UpdateText(GetText(got, sold));
             }
             return orig;
         }

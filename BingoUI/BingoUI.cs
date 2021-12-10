@@ -44,9 +44,7 @@ namespace BingoUI
             On.UIManager.ReturnToMainMenu += OnUnpauseQuitGame;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
-            // GeoTracker stuff. Taken straight up from Serena's code, with no changes, so some of it might be redundant idk
-            On.GeoCounter.Update +=  GeoTracker.UpdateGeoText;
-            On.GeoCounter.TakeGeo += GeoTracker.CheckGeoSpent;
+            GeoTracker.Hook();
         }
 
 

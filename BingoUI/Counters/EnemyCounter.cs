@@ -23,7 +23,7 @@ namespace BingoUI.Counters
             if (self.gameObject.name.StartsWith(enemyName)
                 && BingoUI.localSettings.Enemies.Add((UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, self.gameObject.name)))
             {
-                UpdateText($"{BingoUI.localSettings.Enemies.Where(pair => pair.Item2.StartsWith(enemyName)).Count()}");
+                UpdateText();
             }
         }
     }
