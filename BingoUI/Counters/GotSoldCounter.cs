@@ -27,7 +27,7 @@ namespace BingoUI.Counters
             if (name == obtainString || name == sellString)
             {
                 int got = name == obtainString ? orig : PlayerData.instance.GetInt(obtainString);
-                int sold = name == obtainString ? orig : PlayerData.instance.GetInt(sellString);
+                int sold = name == sellString ? orig : PlayerData.instance.GetInt(sellString);
 
                 UpdateText(GetText(got, sold));
             }
