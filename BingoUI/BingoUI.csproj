@@ -4,20 +4,26 @@
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>BingoUI</RootNamespace>
     <AssemblyTitle>BingoUI</AssemblyTitle>
-	<AssemblyVersion>2.0.1</AssemblyVersion>
+    <AssemblyVersion>2.0.1</AssemblyVersion>
     <Deterministic>true</Deterministic>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  
   <PropertyGroup>
-	<HollowKnightRefs>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed</HollowKnightRefs>
+    <HollowKnightRefs>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed</HollowKnightRefs>
   </PropertyGroup>
+  
+  <!--Gitignored local build properties file to modify the HollowKnightRefs value without needing to change anything in the remote.-->
+  <Import Project="LocalBuildProperties.props" Condition="Exists('LocalBuildProperties.props')" />
+    
   <ItemGroup>
     <None Remove="Resources\Images\**\*.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\**\*.png" />
   </ItemGroup>
+  
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(HollowKnightRefs)\Assembly-CSharp.dll</HintPath>
@@ -33,6 +39,9 @@
     <Reference Include="MMHOOK_PlayMaker, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(HollowKnightRefs)\MMHOOK_PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>$(HollowKnightRefs)\MonoMod.Utils.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(HollowKnightRefs)\PlayMaker.dll</HintPath>
@@ -71,7 +80,7 @@
   </Target>
   
   <Target Name="CopyMod" AfterTargets="PostBuildEvent">
-	<Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb" DestinationFolder="$(HollowKnightRefs)\Mods\$(TargetName)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb" DestinationFolder="$(HollowKnightRefs)\Mods\$(TargetName)" SkipUnchangedFiles="true" />
   </Target>
     
   <Target Name="CreateReleaseZip" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">

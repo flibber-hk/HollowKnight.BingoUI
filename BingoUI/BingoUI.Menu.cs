@@ -7,7 +7,6 @@ namespace BingoUI
     {
         public bool ToggleButtonInsideMenu => false;
 
-
         public List<IMenuMod.MenuEntry> GetMenuData(IMenuMod.MenuEntry? toggleButtonEntry)
         {
             List<IMenuMod.MenuEntry> entries = new List<IMenuMod.MenuEntry>();
@@ -28,9 +27,6 @@ namespace BingoUI
                 Saver = (i) => globalSettings.showSpentGeo = i == 0,
                 Loader = () => globalSettings.showSpentGeo ? 0 : 1
             });
-
-
-            // Button for each counter?
 
             return entries;
         }

@@ -6,6 +6,9 @@
 # Output zip
 BingoUI.zip
 
+# LocalBuildProperties file
+LocalBuildProperties.props
+
 BingoUI/Assembly References
 
 # User-specific files
