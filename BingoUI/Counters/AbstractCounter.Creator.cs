@@ -24,7 +24,7 @@ namespace BingoUI.Counters
                 new TrackedGotSoldCounter(9f / 15f, 0.01f, "rancidegg", nameof(PlayerData.rancidEggs)),
                 new DreamTreeCounter(10f / 15f, 0.01f, "dreamplant"),
                 new LifebloodCounter(11f / 15f, 0.01f, "lifeblood"),
-                new MultiBoolCounter(12f / 15f, 0.01f, "charms", CharmBools),
+                new CharmCounter(12f / 15f, 0.01f, "charms"),
                 new MultiBoolCounter(13f / 15f, 0.01f, "pins", PinNames),
                 new IntCounter(14f / 15f, 0.01f, "notches", nameof(PlayerData.charmSlots)),
                 new EnemyCounter(14f / 15f, 0.12f, "greathusksentry", "Great Shield Zombie")
@@ -67,7 +67,5 @@ namespace BingoUI.Counters
             nameof(PlayerData.hasPinTram),
             nameof(PlayerData.hasPinDreamPlant)
         };
-
-        public static HashSet<string> CharmBools = new HashSet<string>(Enumerable.Range(1, 40).Select(i => $"gotCharm_{i}"));
     }
 }

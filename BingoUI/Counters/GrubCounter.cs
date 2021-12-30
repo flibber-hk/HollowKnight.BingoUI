@@ -127,7 +127,7 @@ namespace BingoUI.Counters
             [ItemChanger.LocationNames.Grub_Basin_Requires_Wings] = MapZone.ABYSS,
             [ItemChanger.LocationNames.Grub_Basin_Requires_Dive] = MapZone.ABYSS,
             [ItemChanger.LocationNames.Grub_Waterways_Main] = MapZone.WATERWAYS,
-            [ItemChanger.LocationNames.Grub_Waterways_East] = MapZone.WATERWAYS,
+            [ItemChanger.LocationNames.Grub_Ismas_Grove] = MapZone.WATERWAYS,
             [ItemChanger.LocationNames.Grub_Waterways_Requires_Tram] = MapZone.WATERWAYS,
             [ItemChanger.LocationNames.Grub_City_of_Tears_Left] = MapZone.CITY,
             [ItemChanger.LocationNames.Grub_Soul_Sanctum] = MapZone.CITY, // MapZone.SOUL_SOCIETY,
