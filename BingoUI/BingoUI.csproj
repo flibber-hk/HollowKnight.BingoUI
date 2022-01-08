@@ -4,7 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>BingoUI</RootNamespace>
     <AssemblyTitle>BingoUI</AssemblyTitle>
-    <AssemblyVersion>2.1.2</AssemblyVersion>
+    <AssemblyVersion>2.1.2.1</AssemblyVersion>
     <Deterministic>true</Deterministic>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
