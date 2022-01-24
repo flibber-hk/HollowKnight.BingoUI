@@ -28,15 +28,15 @@ namespace BingoUI
                 return;
             }
 
-            BingoUI.localSettings.spentGeo += geo;
+            BingoUI.LS.spentGeo += geo;
         }
 
         private static void UpdateGeoText(On.GeoCounter.orig_Update orig, GeoCounter self)
         {
             orig(self);
-            if (BingoUI.globalSettings.showSpentGeo)
+            if (BingoUI.GS.showSpentGeo)
             {
-                self.geoTextMesh.text = $"{GetGeoCounterCurrent(self)} ({BingoUI.localSettings.spentGeo} spent)";
+                self.geoTextMesh.text = $"{GetGeoCounterCurrent(self)} ({BingoUI.LS.spentGeo} spent)";
             }
         }
     }

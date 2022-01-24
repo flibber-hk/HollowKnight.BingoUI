@@ -22,29 +22,27 @@ namespace BingoUI
             {
                 try
                 {
-                    using (Stream stream = typeof(SpriteLoader).Assembly.GetManifestResourceStream(resource))
+                    using Stream stream = typeof(SpriteLoader).Assembly.GetManifestResourceStream(resource);
+                    if (stream == null)
                     {
-                        if (stream == null)
-                        {
-                            continue;
-                        }
-
-                        byte[] buffer = new byte[stream.Length];
-                        stream.Read(buffer, 0, buffer.Length);
-
-                        // Create texture from bytes
-                        Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-                        tex.LoadImage(buffer, true);
-                        tex.filterMode = FilterMode.Point;
-
-                        string resName = Path.GetFileNameWithoutExtension(resource);
-                        string[] pieces = resName.Split('.');
-                        resName = pieces[pieces.Length - 1];
-
-                        // Create sprite from texture
-                        Sprites.Add(resName,
-                            Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)));
+                        continue;
                     }
+
+                    byte[] buffer = new byte[stream.Length];
+                    stream.Read(buffer, 0, buffer.Length);
+
+                    // Create texture from bytes
+                    Texture2D tex = new(1, 1, TextureFormat.RGBA32, false);
+                    tex.LoadImage(buffer, true);
+                    tex.filterMode = FilterMode.Point;
+
+                    string resName = Path.GetFileNameWithoutExtension(resource);
+                    string[] pieces = resName.Split('.');
+                    resName = pieces[pieces.Length - 1];
+
+                    // Create sprite from texture
+                    Sprites.Add(resName,
+                        Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)));
                 }
                 catch (Exception e)
                 {

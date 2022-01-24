@@ -11,7 +11,7 @@ namespace BingoUI.Counters
     {
         public CorniferCounter(float x, float y, string spriteName) : base(x, y, spriteName) { }
 
-        public override string GetText() => $"{BingoUI.localSettings.Cornifers.Count()}";
+        public override string GetText() => $"{BingoUI.LS.Cornifers.Count()}";
 
         public override void Hook()
         {
@@ -40,7 +40,7 @@ namespace BingoUI.Counters
                 fsm.GetState("Box Up").AddMethod(() =>
                 {
                     string sceneName = GameManager.instance.sceneName;
-                    BingoUI.localSettings.Cornifers.Add(sceneName);
+                    BingoUI.LS.Cornifers.Add(sceneName);
                     UpdateText();
                 });
             }
@@ -50,7 +50,7 @@ namespace BingoUI.Counters
         {
             if (CorniferLocations.TryGetValue(location, out string sceneName))
             {
-                BingoUI.localSettings.Cornifers.Add(sceneName);
+                BingoUI.LS.Cornifers.Add(sceneName);
                 UpdateText();
             }
         }

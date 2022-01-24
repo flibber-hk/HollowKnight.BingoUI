@@ -24,8 +24,8 @@ namespace BingoUI
                 Name = "Show Geo Tracker:",
                 Description = string.Empty,
                 Values = new string[] { "True", "False" },
-                Saver = (i) => globalSettings.showSpentGeo = i == 0,
-                Loader = () => globalSettings.showSpentGeo ? 0 : 1
+                Saver = (i) => GS.showSpentGeo = i == 0,
+                Loader = () => GS.showSpentGeo ? 0 : 1
             });
 
             return entries;
@@ -33,14 +33,14 @@ namespace BingoUI
 
         public void SetDisplayState(int i)
         {
-            globalSettings.alwaysDisplay = i == 1;
-            globalSettings.neverDisplay = i == 2;
+            GS.alwaysDisplay = i == 1;
+            GS.neverDisplay = i == 2;
         }
 
         public int GetDisplayState()
         {
-            if (globalSettings.alwaysDisplay) return 1;
-            else if (globalSettings.neverDisplay) return 2;
+            if (GS.alwaysDisplay) return 1;
+            else if (GS.neverDisplay) return 2;
             return 0;
         }
     }

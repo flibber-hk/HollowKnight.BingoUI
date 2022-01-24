@@ -19,7 +19,7 @@ namespace BingoUI.Counters
         public AbstractCounter(float x, float y, string spriteName)
         {
             this.spriteName = spriteName;
-            if (BingoUI.globalSettings.CounterPositions.TryGetValue(spriteName, out Layout layout))
+            if (BingoUI.GS.CounterPositions.TryGetValue(spriteName, out Layout layout))
             {
                 this.x = layout.x;
                 this.y = layout.y;
@@ -29,7 +29,7 @@ namespace BingoUI.Counters
             {
                 this.x = x;
                 this.y = y;
-                BingoUI.globalSettings.CounterPositions.Add(spriteName, new Layout(x, y));
+                BingoUI.GS.CounterPositions.Add(spriteName, new Layout(x, y));
             }
         }
 
@@ -96,7 +96,7 @@ namespace BingoUI.Counters
             canvasGroup = canvasSprite.AddComponent<CanvasGroup>();
             canvasGroup.blocksRaycasts = false;
             canvasGroup.interactable = false;
-            if (!BingoUI.globalSettings.alwaysDisplay) canvasGroup.gameObject.SetActive(false);
+            if (!BingoUI.GS.alwaysDisplay) canvasGroup.gameObject.SetActive(false);
 
             GameObject text = CanvasUtil.CreateTextPanel
             (
@@ -112,7 +112,7 @@ namespace BingoUI.Counters
 
         private IEnumerator FadeCanvas()
         {
-            if (BingoUI.globalSettings.alwaysDisplay || BingoUI.globalSettings.neverDisplay) yield break;
+            if (BingoUI.GS.alwaysDisplay || BingoUI.GS.neverDisplay) yield break;
 
             if (!canvasGroup.gameObject.activeSelf) FadeIn();
             yield return new WaitForSeconds(4f);

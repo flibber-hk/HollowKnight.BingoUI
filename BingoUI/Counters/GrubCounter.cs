@@ -13,7 +13,7 @@ namespace BingoUI.Counters
         public override string GetText()
         {
             MapZone mapZone = GetSanitizedMapzone();
-            return $"{PlayerData.instance.GetInt(nameof(PlayerData.grubsCollected))}({BingoUI.localSettings.AreaGrubs[mapZone]})";
+            return $"{PlayerData.instance.GetInt(nameof(PlayerData.grubsCollected))}({BingoUI.LS.AreaGrubs[mapZone]})";
         }
         public override void Hook()
         {
@@ -25,14 +25,14 @@ namespace BingoUI.Counters
 
         private void OnSceneChange(Scene arg0, Scene arg1)
         {
-            if (BingoUI.globalSettings.alwaysDisplay) UpdateText(canShow: false);
+            if (BingoUI.GS.alwaysDisplay) UpdateText(canShow: false);
         }
 
         private void OnVisitGrubLocation(string location)
         {
             if (GrubLocations.TryGetValue(location, out MapZone mapZone))
             {
-                BingoUI.localSettings.AreaGrubs[mapZone]++;
+                BingoUI.LS.AreaGrubs[mapZone]++;
                 UpdateText(forceShow: true);
             }
         }
@@ -42,7 +42,7 @@ namespace BingoUI.Counters
             if (item == ItemChanger.ItemNames.Grub)
             {
                 MapZone mapZone = GetSanitizedMapzone();
-                BingoUI.localSettings.AreaGrubs[mapZone]--;
+                BingoUI.LS.AreaGrubs[mapZone]--;
                 UpdateText(forceShow: true);
             }
         }
@@ -52,8 +52,8 @@ namespace BingoUI.Counters
             if (name == nameof(PlayerData.grubsCollected))
             {
                 MapZone mapZone = GetSanitizedMapzone();
-                BingoUI.localSettings.AreaGrubs[mapZone]++;
-                UpdateText($"{orig}({BingoUI.localSettings.AreaGrubs[mapZone]})");
+                BingoUI.LS.AreaGrubs[mapZone]++;
+                UpdateText($"{orig}({BingoUI.LS.AreaGrubs[mapZone]})");
             }
             return orig;
         }
@@ -63,45 +63,25 @@ namespace BingoUI.Counters
         /// </summary>
         public static MapZone GetSanitizedMapzone()
         {
-            switch (GameManager.instance.sm.mapZone)
+            return GameManager.instance.sm.mapZone switch
             {
-                case MapZone.CITY:
-                case MapZone.LURIENS_TOWER:
-                case MapZone.SOUL_SOCIETY:
-                case MapZone.KINGS_STATION:
-                    return GameManager.instance.sceneName.StartsWith("Ruins2_11")
-                        // This is Tower of Love, which is separate from city and KE for rando goal purposes
-                        ? MapZone.LOVE_TOWER
-                        : MapZone.CITY;
-                case MapZone.CROSSROADS:
-                case MapZone.SHAMAN_TEMPLE:
-                    return MapZone.CROSSROADS;
-                case MapZone.BEASTS_DEN:
-                case MapZone.DEEPNEST:
-                    return MapZone.DEEPNEST;
-                case MapZone.FOG_CANYON:
-                case MapZone.MONOMON_ARCHIVE:
-                    return MapZone.FOG_CANYON;
-                case MapZone.WASTES:
-                case MapZone.QUEENS_STATION:
-                    return MapZone.WASTES;
-                case MapZone.OUTSKIRTS:
-                case MapZone.HIVE:
-                case MapZone.COLOSSEUM:
-                    return MapZone.OUTSKIRTS;
-                case MapZone.TOWN:
-                case MapZone.KINGS_PASS:
-                    return MapZone.TOWN;
-                case MapZone.WATERWAYS:
-                case MapZone.GODSEEKER_WASTE:
-                    return MapZone.WATERWAYS;
-                default:
-                    return GameManager.instance.sm.mapZone;
-            }
+                MapZone.CITY or MapZone.LURIENS_TOWER or MapZone.SOUL_SOCIETY or MapZone.KINGS_STATION => GameManager.instance.sceneName.StartsWith("Ruins2_11")
+                                        // This is Tower of Love, which is separate from city and KE for rando goal purposes
+                                        ? MapZone.LOVE_TOWER
+                                        : MapZone.CITY,
+                MapZone.CROSSROADS or MapZone.SHAMAN_TEMPLE => MapZone.CROSSROADS,
+                MapZone.BEASTS_DEN or MapZone.DEEPNEST => MapZone.DEEPNEST,
+                MapZone.FOG_CANYON or MapZone.MONOMON_ARCHIVE => MapZone.FOG_CANYON,
+                MapZone.WASTES or MapZone.QUEENS_STATION => MapZone.WASTES,
+                MapZone.OUTSKIRTS or MapZone.HIVE or MapZone.COLOSSEUM => MapZone.OUTSKIRTS,
+                MapZone.TOWN or MapZone.KINGS_PASS => MapZone.TOWN,
+                MapZone.WATERWAYS or MapZone.GODSEEKER_WASTE => MapZone.WATERWAYS,
+                _ => GameManager.instance.sm.mapZone,
+            };
         }
 
         // These represent the Sanitized MapZones of the scenes containing the grubs
-        private static readonly Dictionary<string, MapZone> GrubLocations = new Dictionary<string, MapZone>()
+        private static readonly Dictionary<string, MapZone> GrubLocations = new()
         {
             [ItemChanger.LocationNames.Grub_Crossroads_Acid] = MapZone.CROSSROADS,
             [ItemChanger.LocationNames.Grub_Crossroads_Center] = MapZone.CROSSROADS,

@@ -14,13 +14,13 @@ namespace BingoUI
         internal static BingoUI Instance;
 
         #region Settings
-        public static SaveSettings localSettings { get; set; } = new SaveSettings();
-        public void OnLoadLocal(SaveSettings s) => localSettings = s;
-        public SaveSettings OnSaveLocal() => localSettings;
+        public static SaveSettings LS { get; set; } = new SaveSettings();
+        public void OnLoadLocal(SaveSettings s) => LS = s;
+        public SaveSettings OnSaveLocal() => LS;
 
-        public static GlobalSettings globalSettings { get; set; } = new GlobalSettings();
-        public void OnLoadGlobal(GlobalSettings s) => globalSettings = s;
-        public GlobalSettings OnSaveGlobal() => globalSettings;
+        public static GlobalSettings GS { get; set; } = new GlobalSettings();
+        public void OnLoadGlobal(GlobalSettings s) => GS = s;
+        public GlobalSettings OnSaveGlobal() => GS;
         #endregion
 
         public override void Initialize()
@@ -53,7 +53,7 @@ namespace BingoUI
         {
             yield return orig(uiManager);
 
-            if (globalSettings.alwaysDisplay || globalSettings.neverDisplay)
+            if (GS.alwaysDisplay || GS.neverDisplay)
                 yield break;
 
             // Update and display every image
@@ -67,7 +67,7 @@ namespace BingoUI
         private void OnUnpause(On.UIManager.orig_UIClosePauseMenu origUIClosePauseMenu, UIManager self)
         {
             origUIClosePauseMenu(self);
-            if (globalSettings.alwaysDisplay)
+            if (GS.alwaysDisplay)
                 return;
 
             // Fade all the canvases, which we were displaying due to pause, out
@@ -80,7 +80,7 @@ namespace BingoUI
         private IEnumerator OnUnpauseQuitGame(On.UIManager.orig_ReturnToMainMenu origReturnToMainMenu, UIManager self)
         {
             yield return origReturnToMainMenu(self);
-            if (globalSettings.alwaysDisplay)
+            if (GS.alwaysDisplay)
                 yield break;
 
             // Same thing as above, except apparently quitting to menu doesn't count as unpausing
@@ -92,7 +92,7 @@ namespace BingoUI
 
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            if (!globalSettings.alwaysDisplay)
+            if (!GS.alwaysDisplay)
             {
                 // Fade all the canvases out in case any got stuck on from quick pause/unpausing
                 foreach (AbstractCounter counter in AbstractCounter.Counters)

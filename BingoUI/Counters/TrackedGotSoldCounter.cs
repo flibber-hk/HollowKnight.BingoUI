@@ -13,12 +13,12 @@ namespace BingoUI.Counters
 
         private int AddToSold(int increment)
         {
-            if (!BingoUI.localSettings.spentTrackedItems.TryGetValue(fieldName, out int sold))
+            if (!BingoUI.LS.spentTrackedItems.TryGetValue(fieldName, out int sold))
             {
-                BingoUI.localSettings.spentTrackedItems.Add(fieldName, 0);
+                BingoUI.LS.spentTrackedItems.Add(fieldName, 0);
                 return 0;
             }
-            BingoUI.localSettings.spentTrackedItems[fieldName] = sold + increment;
+            BingoUI.LS.spentTrackedItems[fieldName] = sold + increment;
             return sold + increment;
         }
         private int GetSold() => AddToSold(0);

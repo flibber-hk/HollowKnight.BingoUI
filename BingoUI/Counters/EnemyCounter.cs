@@ -10,7 +10,7 @@ namespace BingoUI.Counters
         {
             this.enemyName = enemyName;
         }
-        public override string GetText() => $"{BingoUI.localSettings.Enemies.Where(pair => pair.Item2.StartsWith(enemyName)).Count()}";
+        public override string GetText() => $"{BingoUI.LS.Enemies.Where(pair => pair.Item2.StartsWith(enemyName)).Count()}";
         public override void Hook()
         {
             On.HealthManager.SendDeathEvent += UpdateUniqueKills;
@@ -21,7 +21,7 @@ namespace BingoUI.Counters
             orig(self);
 
             if (self.gameObject.name.StartsWith(enemyName)
-                && BingoUI.localSettings.Enemies.Add((UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, self.gameObject.name)))
+                && BingoUI.LS.Enemies.Add((UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, self.gameObject.name)))
             {
                 UpdateText();
             }
