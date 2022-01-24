@@ -18,7 +18,7 @@ namespace BingoUI.Counters
                 new GotSoldCounter(3f / 15f, 0.01f, "trinket2", nameof(PlayerData.trinket2), nameof(PlayerData.soldTrinket2)),
                 new GotSoldCounter(4f / 15f, 0.01f, "trinket3", nameof(PlayerData.trinket3), nameof(PlayerData.soldTrinket3)),
                 new GotSoldCounter(5f / 15f, 0.01f, "trinket4", nameof(PlayerData.trinket4), nameof(PlayerData.soldTrinket4)),
-                new PaleOreCounter(6f / 15f, 0.01f, "ore"),
+                new TrackedGotSoldCounter(6f / 15f, 0.01f, "ore", nameof(PlayerData.ore)),
                 new MultiBoolCounter(7f / 15f, 0.01f, "maps", MapNames),
                 new CorniferCounter(8f/15f, 0.01f, "cornifer"),
                 new TrackedGotSoldCounter(9f / 15f, 0.01f, "rancidegg", nameof(PlayerData.rancidEggs)),
