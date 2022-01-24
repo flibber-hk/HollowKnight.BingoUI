@@ -45,6 +45,9 @@ namespace BingoUI
 
         public bool showSpentGeo = true;
         public Dictionary<string, Layout> CounterPositions { get; set; } = new Dictionary<string, Layout>();
+        
+        public string boardUrl = "";
+        public string boardToggle = "Tab";
     }
 
     public class GrubMap : Dictionary<MapZone, int>

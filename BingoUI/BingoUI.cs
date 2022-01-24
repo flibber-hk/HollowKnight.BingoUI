@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using Modding;
 using UnityEngine.SceneManagement;
+using BingoUI.Board;
 using BingoUI.Counters;
 
 namespace BingoUI
@@ -37,6 +38,9 @@ namespace BingoUI
             }
 
             AbstractCounter.InitializeCounters();
+            
+            BingoSync.Setup();
+            BingoSync.Instance.Initialize();
 
             // Pause Hooks
             On.UIManager.GoToPauseMenu += OnPause;
