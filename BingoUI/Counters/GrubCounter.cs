@@ -63,7 +63,9 @@ namespace BingoUI.Counters
         /// </summary>
         public static MapZone GetSanitizedMapzone()
         {
-            return GameManager.instance.sm.mapZone switch
+            MapZone currentMapZone = GameManager.instance?.sm?.mapZone ?? MapZone.NONE;
+
+            return currentMapZone switch
             {
                 MapZone.CITY or MapZone.LURIENS_TOWER or MapZone.SOUL_SOCIETY or MapZone.KINGS_STATION => GameManager.instance.sceneName.StartsWith("Ruins2_11")
                                         // This is Tower of Love, which is separate from city and KE for rando goal purposes
@@ -76,7 +78,7 @@ namespace BingoUI.Counters
                 MapZone.OUTSKIRTS or MapZone.HIVE or MapZone.COLOSSEUM => MapZone.OUTSKIRTS,
                 MapZone.TOWN or MapZone.KINGS_PASS => MapZone.TOWN,
                 MapZone.WATERWAYS or MapZone.GODSEEKER_WASTE => MapZone.WATERWAYS,
-                _ => GameManager.instance.sm.mapZone,
+                _ => currentMapZone,
             };
         }
 
