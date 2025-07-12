@@ -38,4 +38,6 @@ Currently supports:
 
 - Stalking Devout kills (once for each)
 
+- Tolls purchased
+
 - Amount of Geo spent
