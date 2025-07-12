@@ -27,7 +27,8 @@ namespace BingoUI.Counters
                 new CharmCounter(12f / 15f, 0.01f, "charms"),
                 new MultiBoolCounter(13f / 15f, 0.01f, "pins", PinNames),
                 new IntCounter(14f / 15f, 0.01f, "notches", nameof(PlayerData.charmSlots)),
-                new EnemyCounter(14f / 15f, 0.12f, "greathusksentry", "Great Shield Zombie")
+                new EnemyCounter(14f / 15f, 0.12f, "greathusksentry", "Great Shield Zombie"),
+                new TollCounter(13f / 15f, 0.12f, "tolls")
             };
 
             foreach (AbstractCounter counter in Counters)

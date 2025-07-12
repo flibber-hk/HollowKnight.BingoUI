@@ -13,6 +13,7 @@ namespace BingoUI
 
         public Dictionary<MapZone, int> AreaGrubs = new GrubMap();
         public HashSet<string> Cornifers = new HashSet<string>();
+        public HashSet<string> Tolls = new HashSet<string>();
 
         public HashSet<(string, string)> Enemies = new HashSet<(string, string)>();
     }
