@@ -9,13 +9,13 @@ namespace BingoUI
     {
         public int spentGeo;
 
-        public Dictionary<string, int> spentTrackedItems = new Dictionary<string, int>();
+        public Dictionary<string, int> spentTrackedItems = new();
 
         public Dictionary<MapZone, int> AreaGrubs = new GrubMap();
-        public HashSet<string> Cornifers = new HashSet<string>();
-        public HashSet<string> Tolls = new HashSet<string>();
+        public HashSet<string> Cornifers = new();
+        public HashSet<string> Tolls = new();
 
-        public HashSet<(string, string)> Enemies = new HashSet<(string, string)>();
+        public HashSet<(string, string)> Enemies = new();
     }
 
     public struct Layout

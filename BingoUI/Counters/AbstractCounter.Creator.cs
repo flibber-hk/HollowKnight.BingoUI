@@ -39,8 +39,7 @@ namespace BingoUI.Counters
             }
         }
 
-
-        public static HashSet<string> MapNames = new HashSet<string>()
+        public static HashSet<string> MapNames = new()
         {
             nameof(PlayerData.mapAbyss),
             nameof(PlayerData.mapCity),
@@ -57,7 +56,7 @@ namespace BingoUI.Counters
             nameof(PlayerData.mapWaterways)
         };
 
-        public static HashSet<string> PinNames = new HashSet<string>()
+        public static HashSet<string> PinNames = new()
         {
             nameof(PlayerData.hasPinBench),
             nameof(PlayerData.hasPinCocoon),
