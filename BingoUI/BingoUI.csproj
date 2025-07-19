@@ -18,14 +18,10 @@
   <Import Project="LocalBuildProperties.props" Condition="Exists('LocalBuildProperties.props')" />
 
   <ItemGroup>
-    <None Remove="Resources\**\*.png" />
-    <None Remove="Resources\**\*.json" />
-    <None Remove="Resources\**\*.xml" />
+    <None Remove="Resources\Images\*.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*.png" />
-    <EmbeddedResource Include="Resources\**\*.json" />
-    <EmbeddedResource Include="Resources\**\*.xml" />
+    <EmbeddedResource Include="Resources\Images\*.png" />
   </ItemGroup>
   
   <ItemGroup>
